@@ -1,0 +1,69 @@
+The OLED display is the 128x32bit display from Adafruit PiOLED 128x32bit monochrom OLED Add-on for the Rasperry PI (3527)
+https://www.adafruit.com/product/3527
+
+Instructions for Setup
+1.  Login to raspberry PI
+
+2.  Make the file system rw if it isn't already
+
+    sudo mount -o remount,rw /
+
+2.  Install the required software
+
+    sudo apt-get update
+    sudo apt-get install -y
+        build-essential \
+        i2c-tools \
+        git \
+        python-dev  \
+        python-pip \
+        python-imaging \
+        python-smbus \
+        RPi.GPIO
+
+3.  Configure I2C support in the kernel
+    
+    Make the / and /boot file system rw if it isn't already
+    sudo mount -o remount,rw /
+    sudo mount -o remount,rw /boot
+
+    sudo  raspi-config
+    Select Option 5 - Interfacing Options
+    Select Option I2C - Enable/Disable automatic loading of I2C kernel modules
+    Select Yes - to the prompt "Would you like the ARM I2C interface to be enabled?"
+
+    sudo poweroff -h
+
+4.  Install the OLED display
+
+5.  Power on the PI and determine if the display is detected
+
+    Login to the pi and run:
+
+    sudo i2cdetect -y 1
+
+
+6.  Clone the Adafurit repository
+
+    Make the / file system rw if it isn't already
+
+    sudo mount -o remount,rw /
+    
+    git clone https://github.com/adafruit/Adafruit_Python_SSD1306.git
+    cd Adafruit_Python_SSD1306
+    sudo python setup.py install
+
+7.  Clone the code repository:
+
+    git clone https://github.com/core2062/CORE2019-Pi.git
+
+8.  Setup the program to run at boot
+
+    sudo nano /etc/rc.local and add the line, right before the exit 0 line.
+
+    sudo python /home/pi/CORE2019-Pi/oled/oled.py  &
+
+9.  reboot
+
+    sudo reboot
+
